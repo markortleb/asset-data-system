@@ -1,8 +1,8 @@
 config:
-    table_name: "asset_stock_work_daily"
+    table_name: "asset_stock_work_minutely"
     bash_command: >-
       python3 /home/mark/Repos/asset_data_system/util/templates/iex_minutely_stock_etl.py
-      --target-database asset_data_lake --target-table-name asset_stock_work_daily
+      --target-database asset_data_lake --target-table-name asset_stock_work_minutely
       --ticker-symbol WORK --repo-path /home/mark/Repos/asset_data_system/
     schedules: 
       - "30 7 * * *"
