@@ -1,0 +1,10 @@
+config:
+    table_name: "asset_stock_roku_daily"
+    bash_command: >-
+      python3 /home/mark/Repos/asset_data_system/util/templates/iex_minutely_stock_etl.py
+      --target-database asset_data_lake --target-table-name asset_stock_roku_daily
+      --ticker-symbol ROKU --repo-path /home/mark/Repos/asset_data_system/
+    schedules: 
+      - "30 7 * * *"
+      - "0 10 * * *"
+      - "0,30,50,55 13 * * *"

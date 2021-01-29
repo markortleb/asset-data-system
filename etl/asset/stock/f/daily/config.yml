@@ -1,0 +1,10 @@
+config:
+    table_name: "asset_stock_f_daily"
+    bash_command: >-
+      python3 /home/mark/Repos/asset_data_system/util/templates/yfinance_daily_stock_etl_v_1.py
+      --target-database asset_data_lake --target-table asset_stock_f_daily
+      --ticker-symbol F
+    schedules: 
+      - "0 10 * * *"
+      - "0 13 * * *"
+      - "0 14 * * *"

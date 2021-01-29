@@ -25,7 +25,7 @@ def main():
     args = ARGS
     repo_path = os.path.dirname(args.repo_path)
 
-    ticker_symbols_file_name = 'ticker_symbols.csv'
+    ticker_symbols_file_name = 'selected_ticker_symbols.csv'
     ticker_symbols = []
 
     with open(ticker_symbols_file_name) as f:
@@ -37,26 +37,25 @@ def main():
     for ticker_symbol in ticker_symbols:
         template_args = {
             'etl_name': f'asset_stock_{ticker_symbol.lower()}_daily',
-            'etl_path': f'asset/stock/{ticker_symbol.lower()}/daily',
-            'ticker_symbol': ticker_symbol
+            'ticker_symbol': ticker_symbol,
+            'repo_path': repo_path
         }
 
-        output_file_path = f'{repo_path}/etl/' + template_args['etl_path'] + '/config.yml'
-        if not os.path.exists(os.path.dirname(output_file_path)):
+        output_file_path = f'{repo_path}/etl/asset/stock/{ticker_symbol.lower()}/daily/config.yml'
+        output_dir = '/'.join(output_file_path.split('/')[:-1]) + '/'
+        if not os.path.exists(os.path.dirname(output_dir)):
             try:
-                os.makedirs(os.path.dirname(output_file_path))
+                os.makedirs(os.path.dirname(output_dir))
             except OSError as exc: # Guard against race condition
                 if exc.errno != errno.EEXIST:
                     raise
+        print(output_dir)
 
-        with open('templates/config_template_1.yml', 'r') as template_file:
+        with open('templates/config_template_daily.yml', 'r') as template_file:
             config_template = Template(template_file.read())
             out_string = config_template.render(template_args)
             with open(os.path.expanduser(output_file_path), 'w+') as out_file:
                     out_file.write(out_string)
-            
-        
-
 
 
 main()
