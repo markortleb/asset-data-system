@@ -36,7 +36,7 @@ def main():
 
     for ticker_symbol in ticker_symbols:
         template_args = {
-            'etl_name': f'asset_stock_{ticker_symbol.lower()}_daily',
+            'etl_name': f'asset_stock_{ticker_symbol.lower()}_minutely',
             'ticker_symbol': ticker_symbol,
             'repo_path': repo_path
         }
