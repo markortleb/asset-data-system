@@ -161,8 +161,8 @@ def load_intraday_data(ticker_symbol, target_database, target_table_name, iex_to
             if target_table_partition_cursor.count() > 0:
                 current_loaded_epoch = list(set(target_table_partition_df['audit_load_epoch'].to_list()))
 
-                # Only load to previously written partitions IF the existing partition was written before market close
-                if current_loaded_epoch[0] <= iter_market_close.timestamp():
+                # Only load to previously written partitions IF the existing partition was written before end of (full) day
+                if current_loaded_epoch[0] <= (iter_date + timedelta(days=1)).timestamp():
                     intraday_df = get_intraday_df(
                         ticker_symbol, 
                         iex_token, 
