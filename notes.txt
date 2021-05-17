@@ -1,0 +1,6 @@
+# To generate configs from list of tickers, go to util/generators/...
+> python3 generate_minutely.py --repo-path ~/Repos/asset_data_system/
+> python3 generate_daily.py --repo-path ~/Repos/asset_data_system/
+
+# To apply the current changes to cron scheduler
+> python3 apply_config.py -s ~/Repos/asset_data_system/etl/
