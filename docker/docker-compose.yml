@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  asset_data_system_user:
+    build:
+      context: '../'
+      dockerfile: docker/Dockerfile
+    environment:
+      - IEX_TEST=true
+    container_name: asset-data-system-user
+    restart: always
+    stdin_open: true
+    tty: true
+    command: >
+      bash -c "/bin/bash"
+    working_dir: /usr/local/asset-data-system
+    volumes:
+      - type: bind
+        source: ../.
+        target: /usr/local/asset-data-system
+  asset_data_system_db:
+    #    https://dev.to/sonyarianto/how-to-spin-mongodb-server-with-docker-and-docker-compose-2lef
+    # sudo docker ps
+    # sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 9b99de10d575
+    # mongosh --host 172.29.0.2 --port 27017
+    image: mongo:latest
+    container_name: asset-data-system-db
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: pass
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
+
