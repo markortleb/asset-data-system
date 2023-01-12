@@ -4,7 +4,6 @@ build-all:
 
 .PHONY: start-dev-mode
 start-dev-mode:
-	docker-compose -f docker/docker-compose.yml run -d asset_data_system_db
 	docker-compose -f docker/docker-compose.yml run asset_data_system_user
 
 .PHONY: kill-all

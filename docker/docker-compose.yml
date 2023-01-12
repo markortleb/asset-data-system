@@ -1,22 +1,5 @@
 version: '3.8'
 services:
-  asset_data_system_user:
-    build:
-      context: '../'
-      dockerfile: docker/Dockerfile
-    environment:
-      - IEX_TEST=true
-    container_name: asset-data-system-user
-    restart: always
-    stdin_open: true
-    tty: true
-    command: >
-      bash -c "/bin/bash"
-    working_dir: /usr/local/asset-data-system
-    volumes:
-      - type: bind
-        source: ../.
-        target: /usr/local/asset-data-system
   asset_data_system_db:
     #    https://dev.to/sonyarianto/how-to-spin-mongodb-server-with-docker-and-docker-compose-2lef
     # sudo docker ps
@@ -32,6 +15,33 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data_container:/data/db
+  asset_data_system_user:
+    image: ubuntu:focal
+    environment:
+      - IEX_TEST=true
+    container_name: asset-data-system-user
+    links:
+      - 'asset_data_system_db:database'
+    restart: always
+    stdin_open: true
+    tty: true
+    command:
+      bash -c "
+      apt-get update 
+      && apt-get -y install sudo
+      && sudo apt-get install -y wget
+      && sudo apt-get install -y gnupg
+      && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+      && echo 'deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse' | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+      && sudo apt-get update
+      && sudo apt-get install -y mongodb-mongosh
+      && /bin/bash
+      "
+    working_dir: /usr/local/asset-data-system
+    volumes:
+      - type: bind
+        source: ../.
+        target: /usr/local/asset-data-system
 
 volumes:
   mongodb_data_container:
