@@ -25,14 +25,12 @@ def main():
     args = ARGS
     repo_path = os.path.dirname(args.repo_path)
 
-    ticker_symbols_file_name = 'selected_ticker_symbols.csv'
-    ticker_symbols = []
+    ticker_symbols_file_name = 'selected_ticker_symbols.txt'
 
     with open(ticker_symbols_file_name) as f:
-        csv_reader = csv.reader(f, delimiter=',')
-        next(csv_reader, None)
-        for row in csv_reader:
-            ticker_symbols.append(row[0])
+        ticker_symbols_string = f.read()
+
+    ticker_symbols = ticker_symbols_string.split('\n')
 
     for ticker_symbol in ticker_symbols:
         template_args = {

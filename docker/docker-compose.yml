@@ -4,13 +4,10 @@ services:
     #    https://dev.to/sonyarianto/how-to-spin-mongodb-server-with-docker-and-docker-compose-2lef
     # sudo docker ps
     # sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' 9b99de10d575
-    # mongosh --host 172.29.0.2 --port 27017
+    # mongosh --host asset_data_system_db --port 27017
     image: mongo:latest
     container_name: asset-data-system-db
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: pass
     ports:
       - "27017:27017"
     volumes:
@@ -18,7 +15,8 @@ services:
   asset_data_system_user:
     image: ubuntu:focal
     environment:
-      - IEX_TEST=true
+      IEX_TEST: true
+      MONGO_HOST: asset_data_system_db
     container_name: asset-data-system-user
     links:
       - 'asset_data_system_db:database'
@@ -35,6 +33,9 @@ services:
       && echo 'deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse' | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
       && sudo apt-get update
       && sudo apt-get install -y mongodb-mongosh
+      && sudo apt-get install -y python3
+      && sudo apt-get install -y python3-pip
+      && python3 -m pip install -r requirements.txt
       && /bin/bash
       "
     working_dir: /usr/local/asset-data-system
