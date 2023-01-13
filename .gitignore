@@ -1,2 +1,4 @@
 .idea/
 docker/mongo/
+docker/.bash_history
+tasks/

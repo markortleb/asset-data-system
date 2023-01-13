@@ -11,8 +11,10 @@ fonttools==4.38.0
 frozendict==2.3.4
 html5lib==1.1
 idna==3.4
+Jinja2==3.1.2
 kiwisolver==1.4.4
 lxml==4.9.2
+MarkupSafe==2.1.1
 matplotlib==3.6.3
 mplfinance==0.12.9b7
 multitasking==0.0.11

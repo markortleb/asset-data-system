@@ -1,7 +1,7 @@
 config:
     table_name: "{{ etl_name }}"
     bash_command: >-
-      python3 {{ repo_path }}/util/templates/yfinance_daily_stock_etl_v_1.py
+      python scripts/etl/yfinance_daily_stock_etl_v_1.py
       --target-database asset_data_lake --target-table {{ etl_name }}
       --ticker-symbol {{ ticker_symbol }}
     schedules: 
