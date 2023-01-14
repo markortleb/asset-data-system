@@ -11,7 +11,3 @@ start-dev-mode:
 start:
 	touch docker/.bash_history
 	docker-compose -f docker/docker-compose.yml run asset_data_system
-
-.PHONY: kill-all
-kill-all:
-	sudo docker kill $(sudo docker ps -q)

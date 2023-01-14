@@ -46,6 +46,7 @@ services:
     command:
       bash -c "
       bash bootstrap.sh
+      && python scripts/compiler
       "
     working_dir: /usr/local/asset-data-system
     volumes:
