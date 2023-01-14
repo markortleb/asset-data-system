@@ -1,8 +1,7 @@
 config:
-    table_name: "{{ etl_name }}"
+    table_name: "{{ ticker_symbol.lower() }}_minutely_etl"
     bash_command: >-
-      python3 {{ repo_path }}/util/templates/iex_minutely_stock_etl.py
-      --target-database asset_data_lake --target-table-name {{ etl_name }}
+      python {{ project_path }}/util/templates/iex_minutely_stock_etl.py
       --ticker-symbol {{ ticker_symbol }}
     schedules: 
       - "30 7 * * *"

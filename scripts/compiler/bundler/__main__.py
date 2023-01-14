@@ -30,7 +30,6 @@ def bundle_template_file(template_file_name):
     ticker_symbols = file_to_array(ticker_symbols_file_name)
 
     for ticker_symbol in ticker_symbols:
-        etl_name = f'{ticker_symbol.lower()}_daily_etl'
         rendered_file_name = '.'.join(template_file_name.split('.')[:-1])
         output_file_path = f'{os.environ["PROJECT_PATH"]}/tasks/{ticker_symbol.lower()}/{rendered_file_name}'
 
@@ -38,7 +37,7 @@ def bundle_template_file(template_file_name):
             output_file_path,
             template_file_name,
             {
-                'etl_name': etl_name,
+                'project_path': os.environ["PROJECT_PATH"],
                 'ticker_symbol': ticker_symbol
             }
         )
