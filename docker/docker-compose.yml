@@ -26,16 +26,32 @@ services:
     tty: true
     command:
       bash -c "
-      apt-get update 
-      && apt-get -y install sudo
-      && sudo apt-get install -y wget
-      && sudo apt-get install -y gnupg
-      && wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
-      && echo 'deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse' | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-      && sudo apt-get update
-      && sudo apt-get install -y mongodb-mongosh
-      && python -m pip install -r requirements.txt
+      bash bootstrap.sh
       && /bin/bash
+      "
+    working_dir: /usr/local/asset-data-system
+    volumes:
+      - type: bind
+        source: ../.
+        target: /usr/local/asset-data-system
+      - type: bind
+        source: .bash_history
+        target: /root/.bash_history
+  asset_data_system:
+    image: python:3.10
+    environment:
+      IEX_TEST: true
+      MONGO_HOST: asset_data_system_db
+      PROJECT_PATH: /usr/local/asset-data-system
+    container_name: asset-data-system
+    links:
+      - 'asset_data_system_db:database'
+    restart: always
+    stdin_open: true
+    tty: true
+    command:
+      bash -c "
+      bash bootstrap.sh
       "
     working_dir: /usr/local/asset-data-system
     volumes:

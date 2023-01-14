@@ -40,8 +40,7 @@ def main():
     task_list = get_task_list(f'{os.environ["PROJECT_PATH"]}/tasks/')
     
     for task_path in task_list:
-        # submit_task(task_path)
-        print(task_path)
+        submit_task(task_path)
 
 
 main()
