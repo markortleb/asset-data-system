@@ -45,7 +45,7 @@ def bundle_template_file(template_file_name):
 
 def main():
     for template_file_name in os.listdir(f'{os.path.dirname(__file__)}/templates/'):
-        if template_file_name.split('.')[-1] == 'template':
+        if template_file_name.split('.')[-1] == 'jinja2':
             bundle_template_file(template_file_name)
 
 

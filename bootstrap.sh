@@ -9,4 +9,6 @@ echo 'deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb
 sudo apt-get update
 sudo apt-get install -y mongodb-mongosh
 sudo apt-get install -y cron
+sudo apt-get install -y vim
+service cron start
 python -m pip install -r requirements.txt

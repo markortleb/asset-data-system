@@ -115,6 +115,8 @@ def main():
     start_date = '2018-11-20'
     current_datetime_est = datetime.now(pytz.timezone('US/Eastern'))
 
+    print('running')
+
     if current_datetime_est.weekday() not in [5, 6] or True:
         ticker_df = get_yfinance_daily_df(ticker_symbol, start_date)
         
