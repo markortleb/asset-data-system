@@ -77,11 +77,11 @@ def merge_daily_df(new_df, old_df):
     """Merge YFinance Daily Dfs
 
     Args:
-        new_df (pandas dataframe): DF containg YFinance Ticker Info, new read
-        old_df (pandas dataframe): DF containg Stored MongoDB Ticker Info, old read
+        new_df (pandas dataframe): DF containing YFinance Ticker Info, new read
+        old_df (pandas dataframe): DF containing Stored MongoDB Ticker Info, old read
 
     Returns:
-        pandas dataframe: A DF containg all of the data from new_df, merged with old_df
+        pandas dataframe: A DF containing data from new_df, merged with old_df
     """
     # Delete '_id' column that is added from mongo
     del old_df['_id']

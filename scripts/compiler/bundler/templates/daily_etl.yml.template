@@ -1,7 +1,7 @@
 config:
-    table_name: "{{ ticker_symbol.lower() }}_daily_etl"
+    table_name: "{{ ticker_symbol.lower() }}_yfinance_daily_extracts"
     bash_command: >-
-      python {{ project_path }}/scripts/etl/yfinance_daily_stock_etl.py
+      python {{ project_path }}/scripts/etl/yfinance_daily_etl.py
       --ticker-symbol {{ ticker_symbol }}
     schedules: 
       - "0 10 * * *"
