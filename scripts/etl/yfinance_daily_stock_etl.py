@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import yfinance as yf #pip install yfinance
 import os
 from datetime import datetime, timedelta
+import pytz
 import glob
 import shutil
 import time
@@ -18,20 +19,6 @@ def parse_args():
         dest='ticker_symbol',
         required=True,
         help='Ticker Symbol'
-    )
-    parser.add_argument(
-        '-t',
-        '--target-table',
-        dest='target_table',
-        required=True,
-        help='Target Table'
-    )
-    parser.add_argument(
-        '-d',
-        '--target-database',
-        dest='target_database',
-        required=True,
-        help='Target Database'
     )
 
     return parser.parse_known_args()
@@ -69,9 +56,7 @@ def convert_df_to_dict_with_index(df):
 
 
 def get_yfinance_daily_df(ticker_symbol, start_date):
-    current_date = datetime.now().strftime('%Y-%m-%d')
     audit_load_epoch = int(datetime.now().timestamp())
-
     ticker_df = yf.download(ticker_symbol, start=start_date)
     ticker_df = yfinance_to_mongo_rename(ticker_df)
     ticker_df = add_audit_columns(ticker_df, audit_load_epoch)
@@ -125,19 +110,19 @@ def merge_daily_df(new_df, old_df):
 def main():
     args = ARGS
     ticker_symbol = args.ticker_symbol
-    target_table_name = args.target_table
-    target_database = args.target_database
+    target_table_name = f'{ticker_symbol.lower()}_yfinance_daily_extracts'
+    target_database_name = 'asset_database'
     start_date = '2018-11-20'
-    current_date = datetime.today()
+    current_datetime_est = datetime.now(pytz.timezone('US/Eastern'))
 
-    if current_date.weekday() not in [5, 6]:
+    if current_datetime_est.weekday() not in [5, 6] or True:
         ticker_df = get_yfinance_daily_df(ticker_symbol, start_date)
         
-        mongo_client = MongoClient('localhost', 27017)
-        asset_data_lake = mongo_client[target_database]
-        target_table = asset_data_lake[target_table_name]
+        mongo_client = MongoClient('asset_data_system_db', 27017)
+        target_database = mongo_client[target_database_name]
+        target_table = target_database[target_table_name]
 
-        if target_table.count({}) > 0:
+        if target_table.count_documents({}) > 0:
             target_table_cursor = target_table.find({})
             target_table_df = pd.DataFrame(list(target_table_cursor))
             out_df = merge_daily_df(ticker_df, target_table_df)
