@@ -1,5 +1,5 @@
 config:
-    table_name: "{{ ticker_symbol.lower() }}_yfinance_daily_extracts"
+    task_name: "{{ ticker_symbol.lower() }}_yfinance_daily_extractor"
     bash_command: >-
       /usr/local/bin/python {{ project_path }}/scripts/etl/yfinance_daily_etl.py
       --ticker-symbol {{ ticker_symbol }}

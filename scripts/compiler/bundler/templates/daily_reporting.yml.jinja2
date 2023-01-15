@@ -1,0 +1,7 @@
+config:
+    task_name: "{{ ticker_symbol.lower() }}_daily_reporter"
+    bash_command: >-
+      /usr/local/bin/python {{ project_path }}/scripts/reporting/daily
+      --ticker-symbol {{ ticker_symbol }}
+    schedules:
+      - "2 * * * *"
