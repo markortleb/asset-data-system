@@ -3,3 +3,4 @@ docker/mongo/
 docker/.bash_history
 tasks/
 reports/
+./*/__pycache__/
