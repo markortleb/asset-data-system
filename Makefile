@@ -1,7 +1,3 @@
-.PHONY: build-all
-build-all:
-	docker-compose -f docker/docker-compose.yml build
-
 .PHONY: start-dev-mode
 start-dev-mode:
 	touch docker/.bash_history

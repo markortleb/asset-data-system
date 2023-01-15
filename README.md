@@ -20,9 +20,11 @@ on Linux Mint.
 
 ## Getting Started
 
+Take a look at the **selected_ticker_symbols.txt** and add or remove ticker
+symbols as you see fit. Then, do one of the following.
+
 ### Run the interactive dev mode
 
-1. Run the following in the root directory of this repo:
 ```bash
 sudo make start-dev-mode
 ```
@@ -31,3 +33,28 @@ sudo make start-dev-mode
 ```bash
 sudo make start
 ```
+
+
+## How it works
+
+Assume we run the prod mode. Here is what happens:
+
+- Two docker containers are spun up:
+  - A container with a MongoDB database running.
+  - A container running a Python docker image. This is the controller.
+  
+- The controller container does the following on startup:
+  - Runs startup actions defined in **bootstrap.sh**.
+  - Runs a Python script to define and schedule tasks defined in
+**scripts/compiler/bundler/templates/** for all ticker symbols in the 
+**selected_ticker_symbols.txt**. The tasks are scheduled on the container's
+cron scheduler.
+
+- The basic outline for each task is:
+  - Download ticker data from yfinance, and load it to the mongo database.
+  - Pull ticker data from each collection, and create a set of technical
+analysis reports from that data.
+
+- Two untracked directories will be created in this repo:
+  - **tasks/** will hold YML files for tasks to help with debugging.
+  - **reports/** will hold the generated technical analysis reports.
